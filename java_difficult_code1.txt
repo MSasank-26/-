@@ -1,0 +1,465 @@
+import java.util.*;
+
+class User {
+
+    protected String name;
+
+    User(String name) {
+        this.name = name;
+    }
+
+    public void display() {
+        System.out.println("Welcome " + name);
+    }
+}
+
+class Processor extends User {
+
+    Processor(String name) {
+        super(name);
+    }
+
+    @Override
+    public void display() {
+        System.out.println("System Started Successfully For User : " + name);
+    }
+
+    public double arithmeticOperation(double a, double b, String op) {
+
+        switch (op) {
+
+            case "+":
+                return a + b;
+
+            case "-":
+                return a - b;
+
+            case "*":
+                return a * b;
+
+            case "/":
+
+                if (b == 0)
+                    throw new ArithmeticException("Division By Zero Not Allowed");
+
+                return a / b;
+
+            case "%":
+
+                if (b == 0)
+                    throw new ArithmeticException("Modulo By Zero Not Allowed");
+
+                return a % b;
+
+            default:
+                throw new IllegalArgumentException("Invalid Arithmetic Operator");
+        }
+    }
+
+    public boolean isPalindrome(String s) {
+
+        if (s == null || s.length() == 0)
+            return false;
+
+        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left < right) {
+
+            if (s.charAt(left) != s.charAt(right))
+                return false;
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    public boolean canFormPalindrome(String s) {
+
+        if (s == null || s.length() == 0)
+            return false;
+
+        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        int odd = 0;
+
+        for (int value : map.values()) {
+
+            if (value % 2 != 0)
+                odd++;
+        }
+
+        return odd <= 1;
+    }
+
+    public ArrayList<String> removeDuplicates(ArrayList<String> list) {
+        return new ArrayList<>(new LinkedHashSet<>(list));
+    }
+
+    public ArrayList<String> palindromeStrings(ArrayList<String> list) {
+
+        ArrayList<String> result = new ArrayList<>();
+
+        for (String s : list) {
+
+            if (isPalindrome(s) || canFormPalindrome(s)) {
+                result.add(s);
+            }
+        }
+
+        return removeDuplicates(result);
+    }
+
+    public void printArray(int[] arr) {
+
+        System.out.println("Array Elements:");
+
+        for (int value : arr) {
+            System.out.print(value + " ");
+        }
+
+        System.out.println();
+    }
+
+    public void printList(ArrayList<String> list) {
+
+        for (String value : list) {
+            System.out.println(value);
+        }
+    }
+
+    public ArrayList<Integer> combinationSums(int[] arr) {
+
+        HashSet<Integer> set = new HashSet<>();
+
+        int total = 1 << arr.length;
+
+        for (int i = 1; i < total; i++) {
+
+            int sum = 0;
+
+            for (int j = 0; j < arr.length; j++) {
+
+                if ((i & (1 << j)) != 0) {
+                    sum += arr[j];
+                }
+            }
+
+            set.add(sum);
+        }
+
+        return new ArrayList<>(set);
+    }
+
+    public int factorial(int n) {
+
+        if (n < 0)
+            throw new IllegalArgumentException("Negative Number Not Allowed");
+
+        int fact = 1;
+
+        for (int i = 1; i <= n; i++) {
+            fact *= i;
+        }
+
+        return fact;
+    }
+
+    public boolean isPrime(int n) {
+
+        if (n <= 1)
+            return false;
+
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+
+            if (n % i == 0)
+                return false;
+        }
+
+        return true;
+    }
+}
+
+public class hardcode {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+
+            System.out.println("======================================");
+            System.out.println("ADVANCED JAVA PROCESSING APPLICATION");
+            System.out.println("======================================");
+
+            System.out.println("Enter User Name:");
+
+            String username = sc.nextLine();
+
+            if (username.trim().isEmpty())
+                throw new IllegalArgumentException("User Name Cannot Be Empty");
+
+            Processor p = new Processor(username);
+
+            p.display();
+
+            System.out.println("======================================");
+
+            String processChoice = "START";
+
+            do {
+
+                System.out.println("Welcome To Arithmetic Operations");
+                System.out.println("Type START To Begin Or STOP To Exit");
+
+                processChoice = sc.next();
+
+                if (processChoice.equalsIgnoreCase("STOP")) {
+
+                    System.out.println("Arithmetic Section Closed");
+                    break;
+                }
+
+                if (!processChoice.equalsIgnoreCase("START")) {
+
+                    System.out.println("Invalid Choice");
+                    continue;
+                }
+
+                boolean restart = true;
+
+                while (restart) {
+
+                    System.out.println("--------------------------------------");
+
+                    System.out.println("Enter First Number:");
+                    double a = sc.nextDouble();
+
+                    System.out.println("Enter Second Number:");
+                    double b = sc.nextDouble();
+
+                    System.out.println("Enter Arithmetic Operator (+ - * / %):");
+                    String op = sc.next();
+
+                    double result = p.arithmeticOperation(a, b, op);
+
+                    System.out.println("Arithmetic Result : " + result);
+
+                    System.out.println("--------------------------------------");
+
+                    System.out.println("Boolean Results:");
+
+                    System.out.println("Is First Number Greater Than Second Number ? " + (a > b));
+
+                    System.out.println("Are Both Numbers Equal ? " + (a == b));
+
+                    System.out.println("Is First Number Positive ? " + (a > 0));
+
+                    System.out.println("Is Second Number Negative ? " + (b < 0));
+
+                    System.out.println("--------------------------------------");
+
+                    System.out.println("Restart Calculation ?");
+                    System.out.println("Type YES To Continue Or NO To Stop");
+
+                    String again = sc.next();
+
+                    if (again.equalsIgnoreCase("YES")) {
+
+                        restart = true;
+
+                    } else {
+
+                        restart = false;
+                        processChoice = "STOP";
+                    }
+                }
+
+            } while (!processChoice.equalsIgnoreCase("STOP"));
+
+            System.out.println("======================================");
+
+            System.out.println("Enter Array Size:");
+
+            int n = sc.nextInt();
+
+            if (n <= 0)
+                throw new IllegalArgumentException("Array Size Must Be Greater Than Zero");
+
+            int[] arr = new int[n];
+
+            System.out.println("Enter " + n + " Array Elements:");
+
+            for (int i = 0; i < n; i++) {
+                arr[i] = sc.nextInt();
+            }
+
+            p.printArray(arr);
+
+            int sum = 0;
+
+            int max = arr[0];
+
+            int min = arr[0];
+
+            for (int value : arr) {
+
+                sum += value;
+
+                if (value > max)
+                    max = value;
+
+                if (value < min)
+                    min = value;
+            }
+
+            System.out.println("Sum Of Array Elements : " + sum);
+
+            System.out.println("Maximum Element : " + max);
+
+            System.out.println("Minimum Element : " + min);
+
+            System.out.println("======================================");
+
+            System.out.println("All Possible Combination Sums:");
+
+            ArrayList<Integer> combinationList = p.combinationSums(arr);
+
+            System.out.println(combinationList);
+
+            System.out.println("======================================");
+
+            System.out.println("Prime Number Validation:");
+
+            for (int value : arr) {
+
+                if (p.isPrime(value)) {
+                    System.out.println(value + " Is Prime");
+                } else {
+                    System.out.println(value + " Is Not Prime");
+                }
+            }
+
+            System.out.println("======================================");
+
+            System.out.println("Factorial Results:");
+
+            for (int value : arr) {
+
+                if (value >= 0 && value <= 10) {
+                    System.out.println("Factorial Of " + value + " = " + p.factorial(value));
+                } else {
+                    System.out.println("Factorial Skipped For " + value);
+                }
+            }
+
+            System.out.println("======================================");
+
+            System.out.println("Enter Number Of Strings:");
+
+            int m = sc.nextInt();
+
+            if (m <= 0)
+                throw new IllegalArgumentException("String Count Must Be Greater Than Zero");
+
+            ArrayList<String> strings = new ArrayList<>();
+
+            System.out.println("Enter " + m + " Strings:");
+
+            for (int i = 0; i < m; i++) {
+
+                String input = sc.next();
+
+                if (input.trim().isEmpty())
+                    throw new IllegalArgumentException("Empty String Not Allowed");
+
+                strings.add(input);
+            }
+
+            System.out.println("======================================");
+
+            ArrayList<String> uniqueStrings = p.removeDuplicates(strings);
+
+            System.out.println("Unique Strings:");
+
+            p.printList(uniqueStrings);
+
+            System.out.println("======================================");
+
+            ArrayList<String> palindromeList = p.palindromeStrings(uniqueStrings);
+
+            System.out.println("Palindrome Or Can Form Palindrome:");
+
+            if (palindromeList.size() == 0) {
+
+                System.out.println("No Palindrome Strings Found");
+
+            } else {
+
+                p.printList(palindromeList);
+            }
+
+            System.out.println("======================================");
+
+            System.out.println("Palindrome Validation Results:");
+
+            for (String s : uniqueStrings) {
+
+                if (p.isPalindrome(s)) {
+
+                    System.out.println(s + " -> Perfect Palindrome");
+
+                } else if (p.canFormPalindrome(s)) {
+
+                    System.out.println(s + " -> Can Form Palindrome");
+
+                } else {
+
+                    System.out.println(s + " -> Cannot Form Palindrome");
+                }
+            }
+
+            System.out.println("======================================");
+
+            System.out.println("Program Executed Successfully");
+
+        }
+
+        catch (InputMismatchException e) {
+
+            System.out.println("Input Mismatch Error : Invalid Data Type Entered");
+        }
+
+        catch (ArithmeticException e) {
+
+            System.out.println("Arithmetic Exception : " + e.getMessage());
+        }
+
+        catch (IllegalArgumentException e) {
+
+            System.out.println("Illegal Argument Exception : " + e.getMessage());
+        }
+
+        catch (Exception e) {
+
+            System.out.println("Unexpected Error Occurred");
+        }
+
+        finally {
+
+            sc.close();
+
+            System.out.println("Application Closed");
+        }
+    }
+}
